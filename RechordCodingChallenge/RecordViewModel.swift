@@ -22,9 +22,14 @@ class RecordViewModel: ObservableObject {
         mixer = audioMixer
     }
         
-    func loadAudio(from url: URL) {
+    func loadAudio(from url: URL, isLooping: Bool = true) {
+        if player != nil {
+          player = nil
+        }
         player = AudioPlayer(url: url, buffered: false)
         guard let player = player else { return }
+        player.isLooping = isLooping
+        mixer.removeAllInputs()
         mixer.addInput(player)
     }
 }
